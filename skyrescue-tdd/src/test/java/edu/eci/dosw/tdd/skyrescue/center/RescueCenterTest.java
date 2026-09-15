@@ -18,17 +18,19 @@ class RescueCenterTest {
 
     @Test
     void shouldRegisterDroneWhenDataIsValid() {
+        // Preparar
         Drone drone = new Drone("D1", "Falcon", 50);
-
+        // Actuar
         boolean registered = center.addDrone(drone);
-
+        // Assert
         assertTrue(registered);
     }
 
     @Test
     void shouldNotRegisterNullDrone() {
+        // Actuar
         boolean registered = center.addDrone(null);
-
+        // Assert
         assertFalse(registered);
     }
 }
