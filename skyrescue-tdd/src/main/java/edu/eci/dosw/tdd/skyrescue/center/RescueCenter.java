@@ -44,7 +44,7 @@ public class RescueCenter {
         if (drone.getId() == null || drone.getId() == "") {
             return false;
         }
-        
+
         drones.put(drone.getId(), drone);
         return true;
     }

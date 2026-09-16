@@ -25,7 +25,7 @@ public class RescueCenterTest {
         boolean registered = center.addDrone(drone);
 
     @Test
-    void shouldRegisterADroneWithAnEmptyId() {
+    void shouldNotRegisterADroneWithAnEmptyId() {
         // Preparar
         Drone drone = new Drone("", "DJI Mini", 8);
 
@@ -43,29 +43,4 @@ public class RescueCenterTest {
         boolean registered = center.addDrone(null);
         // Assert
         assertFalse(registered);
-    void shouldNotRegisterTwoDronesWithSameId() {
-
-    }
-
-    // Casos B
-    @Test
-    void shouldNotHaveAnInexistentDrone() {
-
-    }
-
-    @Test
-    void shouldShowADroneIsOccupied() {
-
-    }
-
-    // Casos C
-    @Test
-    void shouldNotCloseTheSameMissionTwoTimes() {
-
-    }
-
-    @Test
-    void shouldNotModifyAnotherActiveMission() {
-
-    }
 }
