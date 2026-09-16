@@ -139,6 +139,9 @@
          */
         public Mission completeMission(String missionId) {
             Mission mission = findMissionById(missionId);
+            if (mission == null) {
+                throw new IllegalArgumentException("Mission not found: " + missionId);
+            }
             mission.setStatus(MissionStatus.COMPLETED);
             mission.setEndDate(LocalDateTime.now());
             mission.getDrone().setAvailable(true);
