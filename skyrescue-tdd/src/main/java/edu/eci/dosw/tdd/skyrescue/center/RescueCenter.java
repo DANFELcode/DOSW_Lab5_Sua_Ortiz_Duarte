@@ -138,8 +138,18 @@
          * @return completed mission.
          */
         public Mission completeMission(String missionId) {
-            // TODO Implement using TDD.
-            return null;
+            Mission mission = findMissionById(missionId);
+            mission.setStatus(MissionStatus.COMPLETED);
+            mission.setEndDate(LocalDateTime.now());
+            mission.getDrone().setAvailable(true);
+            return mission;
+        }
+
+        private Mission findMissionById(String missionId) {
+            return missions.stream()
+                    .filter(m -> m.getId().equals(missionId))
+                    .findFirst()
+                    .orElse(null);
         }
 
         public boolean addOperator(RescueOperator operator) {
