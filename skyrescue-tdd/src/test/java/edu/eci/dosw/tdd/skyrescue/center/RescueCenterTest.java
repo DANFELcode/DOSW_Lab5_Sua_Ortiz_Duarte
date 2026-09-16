@@ -1,13 +1,14 @@
 package edu.eci.dosw.tdd.skyrescue.center;
 
 import edu.eci.dosw.tdd.skyrescue.drone.Drone;
+import edu.eci.dosw.tdd.skyrescue.mission.Mission;
 
-import edu.eci.dosw.tdd.skyrescue.center.RescueCenter;
+import edu.eci.dosw.tdd.skyrescue.mission.MissionStatus;
+import edu.eci.dosw.tdd.skyrescue.operator.RescueOperator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RescueCenterTest {
 
@@ -60,5 +61,19 @@ public class RescueCenterTest {
 
         // Assert
         assertFalse(secondDroneRegistered, "Can't add a drone with same ID");
+    }
+
+    // Casos B
+    @Test
+    void shouldNotHaveAnInexistentDrone() {
+        // Preparar
+        RescueOperator operator = new RescueOperator("R1", "Daniel");
+        center.addOperator(operator);
+        String inexistentDroneId = "D4";
+
+        // Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            center.assignMission("R1", inexistentDroneId, "Panama", 100);
+        }, "An Illegal Argument has been thrown because the drone id doesn't exists");
     }
 }

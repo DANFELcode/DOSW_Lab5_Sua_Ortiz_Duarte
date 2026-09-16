@@ -82,7 +82,12 @@ public class RescueCenter {
             String droneId,
             String location,
             int distanceKm) {
-        // TODO Implement using TDD.
+        Drone drone = drones.get(droneId);
+
+        if(drone == null) {
+            throw new IllegalArgumentException("This drone doesn't exists");
+        }
+
         return null;
     }
 
