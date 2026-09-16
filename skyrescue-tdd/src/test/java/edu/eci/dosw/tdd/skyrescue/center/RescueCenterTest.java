@@ -1,13 +1,15 @@
 package edu.eci.dosw.tdd.skyrescue.center;
 
 import edu.eci.dosw.tdd.skyrescue.drone.Drone;
+
+import edu.eci.dosw.tdd.skyrescue.center.RescueCenter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class RescueCenterTest {
+public class RescueCenterTest {
 
     private RescueCenter center;
 
@@ -16,21 +18,47 @@ class RescueCenterTest {
         center = new RescueCenter();
     }
 
+    // Casos A
     @Test
     void shouldRegisterDroneWhenDataIsValid() {
         // Preparar
         Drone drone = new Drone("D1", "Falcon", 50);
         // Actuar
         boolean registered = center.addDrone(drone);
-        // Assert
         assertTrue(registered);
     }
 
     @Test
-    void shouldNotRegisterNullDrone() {
+    void shouldNotRegisterNullDrone () {
         // Actuar
         boolean registered = center.addDrone(null);
         // Assert
         assertFalse(registered);
+    }
+
+    @Test
+    void shouldNotRegisterADroneWithAnEmptyId () {
+        // Preparar
+        Drone drone = new Drone("", "DJI Mini", 8);
+
+        // Actuar
+        boolean droneRegistered = center.addDrone(drone);
+
+        // Assert
+        assertFalse(droneRegistered, "Can't add a drone with an empty id");
+    }
+
+    @Test
+    void shouldNotRegisterTwoDronesWithSameId() {
+        // Preparar
+        Drone firstDrone = new Drone("D2", "E88", 10);
+        Drone secondDrone = new Drone("D2", "DJI Neo 2", 7);
+
+        // Actuar
+        center.addDrone(firstDrone);
+        boolean secondDroneRegistered = center.addDrone(secondDrone);
+
+        // Assert
+        assertFalse(secondDroneRegistered, "Can't add a drone with same ID");
     }
 }
