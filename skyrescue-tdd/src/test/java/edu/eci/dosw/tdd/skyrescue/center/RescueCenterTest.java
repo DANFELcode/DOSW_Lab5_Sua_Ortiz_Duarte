@@ -1,6 +1,8 @@
 package edu.eci.dosw.tdd.skyrescue.center;
 
 import edu.eci.dosw.tdd.skyrescue.drone.Drone;
+
+import edu.eci.dosw.tdd.skyrescue.center.RescueCenter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +29,14 @@ public class RescueCenterTest {
     }
 
     @Test
+    void shouldNotRegisterNullDrone () {
+        // Actuar
+        boolean registered = center.addDrone(null);
+        // Assert
+        assertFalse(registered);
+    }
+
+    @Test
     void shouldNotRegisterADroneWithAnEmptyId () {
         // Preparar
         Drone drone = new Drone("", "DJI Mini", 8);
@@ -39,10 +49,16 @@ public class RescueCenterTest {
     }
 
     @Test
-    void shouldNotRegisterNullDrone () {
+    void shouldNotRegisterTwoDronesWithSameId() {
+        // Preparar
+        Drone firstDrone = new Drone("D2", "E88", 10);
+        Drone secondDrone = new Drone("D2", "DJI Neo 2", 7);
+
         // Actuar
-        boolean registered = center.addDrone(null);
+        center.addDrone(firstDrone);
+        boolean secondDroneRegistered = center.addDrone(secondDrone);
+
         // Assert
-        assertFalse(registered);
+        assertFalse(secondDroneRegistered, "Can't add a drone with same ID");
     }
 }

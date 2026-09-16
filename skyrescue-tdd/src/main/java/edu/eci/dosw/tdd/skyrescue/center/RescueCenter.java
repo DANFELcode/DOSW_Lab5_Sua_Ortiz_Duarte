@@ -41,7 +41,11 @@ public class RescueCenter {
             return false;
         }
 
-        if (drone.getId() == null || drone.getId() == "") {
+        if (drone.getId() == null || drone.getId().isEmpty()) {
+            return false;
+        }
+
+        if(drones.containsKey(drone.getId())) {
             return false;
         }
 
