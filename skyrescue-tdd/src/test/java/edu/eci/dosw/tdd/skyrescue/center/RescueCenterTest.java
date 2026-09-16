@@ -23,9 +23,10 @@ public class RescueCenterTest {
         Drone drone = new Drone("D1", "Falcon", 50);
         // Actuar
         boolean registered = center.addDrone(drone);
+    }
 
     @Test
-    void shouldNotRegisterADroneWithAnEmptyId() {
+    void shouldNotRegisterADroneWithAnEmptyId () {
         // Preparar
         Drone drone = new Drone("", "DJI Mini", 8);
 
@@ -38,9 +39,10 @@ public class RescueCenterTest {
     }
 
     @Test
-    void shouldNotRegisterNullDrone() {
+    void shouldNotRegisterNullDrone () {
         // Actuar
         boolean registered = center.addDrone(null);
         // Assert
         assertFalse(registered);
+    }
 }
