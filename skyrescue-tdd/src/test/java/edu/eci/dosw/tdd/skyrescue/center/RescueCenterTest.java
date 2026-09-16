@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import edu.eci.dosw.tdd.skyrescue.operator.RescueOperator;
 
 public class RescueCenterTest {
 
@@ -72,6 +73,28 @@ public class RescueCenterTest {
         // Actuar y Assert
         assertThrows(IllegalArgumentException.class, () -> center.assignMission("1005", "D3", "Zona norte", 10));
     }
+
+    @Test
+    void shouldNotAssignMissionWithAnOperatorWithActiveMission() {
+        // Preparar
+        RescueOperator operator = new RescueOperator("OP1", "Ana");
+        center.addOperator(operator);
+
+        Drone drone_1 = new Drone("D4", "E26", 15);
+        center.addDrone(drone_1);
+
+        Drone drone_2 = new Drone("D5", "E26", 15);
+        center.addDrone(drone_2);
+
+        center.assignMission("OP1", "D4", "Zona norte", 15);
+
+        // Actuar y Assert
+        assertThrows(IllegalStateException.class, () -> center.assignMission("OP1", "D5", "Zona sur", 15));
+
+
+    }
+
+
 
 
 }
