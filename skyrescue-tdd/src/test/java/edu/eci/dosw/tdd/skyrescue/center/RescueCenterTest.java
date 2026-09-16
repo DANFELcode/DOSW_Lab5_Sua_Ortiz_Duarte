@@ -119,6 +119,19 @@ public class RescueCenterTest {
     }
 
 
+    @Test
+    void shouldNotCompleteNonExistentMission() {
+        // Arrange
+        RescueCenter center = new RescueCenter();
+
+        // Act + Assert
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> center.completeMission("MISSION NOT FOUND")
+        );
+    }
+
+
 
 
 }
