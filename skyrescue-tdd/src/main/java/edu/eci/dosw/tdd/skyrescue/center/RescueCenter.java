@@ -91,6 +91,10 @@ public class RescueCenter {
                 throw new IllegalArgumentException("This drone doesn't exists");
             }
 
+            if(!drone.isAvailable()) {
+                throw new IllegalStateException("This drone is not available yet");
+            }
+
             RescueOperator operator = findOperatorById(operatorId);
             if (operator == null) {
                 throw new IllegalArgumentException("Operator not found: " + operatorId);
@@ -98,7 +102,7 @@ public class RescueCenter {
             if (hasActiveMission(operatorId)) {
                 throw new IllegalStateException("Operator already has an active mission: " + operatorId);
             }
-            Drone drone = drones.get(droneId);
+
             Mission mission = new Mission(
                     UUID.randomUUID().toString(),
                     location,

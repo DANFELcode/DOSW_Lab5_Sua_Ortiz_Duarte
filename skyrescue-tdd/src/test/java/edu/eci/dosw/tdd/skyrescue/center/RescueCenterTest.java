@@ -63,6 +63,39 @@ public class RescueCenterTest {
         assertFalse(secondDroneRegistered, "Can't add a drone with same ID");
     }
 
+    // Casos B
+    @Test
+    void shouldNotHaveAnInexistentDrone() {
+        // Preparar
+        RescueOperator operator = new RescueOperator("R1", "Daniel");
+        center.addOperator(operator);
+        String inexistentDroneId = "D4";
+
+        // Actuar y Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            center.assignMission("R1", inexistentDroneId, "Panama", 100);
+        }, "An Illegal Argument must have been thrown because the drone id doesn't exists");
+    }
+
+    @Test
+    void shouldNotAssignMissionIfADroneIsOccupied() {
+        // Preparar
+        RescueOperator firstOperator = new RescueOperator("R2", "Juan");
+        RescueOperator secondOperator = new RescueOperator("R3", "David");
+        Drone drone = new Drone("D33", "E88", 10);
+
+        center.addOperator(firstOperator);
+        center.addOperator(secondOperator);
+        center.addDrone(drone);
+
+        center.assignMission("R2", "D33", "Chia", 10);
+
+        // Actuar y Assert
+        assertThrows(IllegalStateException.class, () ->{ center.assignMission("R3", "D33",
+                "San Cristobal", 90);
+        }, "An Illegal State must be thrown because the drone is assigned to a mission already");
+    }
+
     @Test
     void shouldNotAssignMissionWithAnInexistentOperator() {
         // Preparar
@@ -93,7 +126,7 @@ public class RescueCenterTest {
 
     }
 
-
+    // Casos C
     @Test
     void shouldCompleteActiveMission() {
         // Arrange
@@ -123,23 +156,5 @@ public class RescueCenterTest {
                 IllegalArgumentException.class,
                 () -> center.completeMission("MISSION NOT FOUND")
         );
-    }
-
-
-
-
-
-    // Casos B
-    @Test
-    void shouldNotHaveAnInexistentDrone() {
-        // Preparar
-        RescueOperator operator = new RescueOperator("R1", "Daniel");
-        center.addOperator(operator);
-        String inexistentDroneId = "D4";
-
-        // Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            center.assignMission("R1", inexistentDroneId, "Panama", 100);
-        }, "An Illegal Argument has been thrown because the drone id doesn't exists");
     }
 }
