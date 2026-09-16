@@ -26,11 +26,10 @@ public class RescueCenterTest {
 
     @Test
     void shouldRegisterADroneWithAnEmptyId() {
-        // Arrange
-        RescueCenter center = new RescueCenter();
+        // Preparar
         Drone drone = new Drone("", "DJI Mini", 8);
 
-        // Act
+        // Actuar
         boolean droneRegistered = center.addDrone(drone);
 
         // Assert
