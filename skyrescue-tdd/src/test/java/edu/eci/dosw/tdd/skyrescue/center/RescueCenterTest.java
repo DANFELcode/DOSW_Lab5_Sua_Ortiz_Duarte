@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RescueCenterTest {
 
@@ -61,4 +62,16 @@ public class RescueCenterTest {
         // Assert
         assertFalse(secondDroneRegistered, "Can't add a drone with same ID");
     }
+
+    @Test
+    void shouldNotAssignMissionWithAnInexistentOperator() {
+        // Preparar
+        Drone drone = new Drone("D3", "E26", 15);
+        center.addDrone(drone);
+
+        // Actuar y Assert
+        assertThrows(IllegalArgumentException.class, () -> center.assignMission("1005", "D3", "Zona norte", 10));
+    }
+
+
 }
