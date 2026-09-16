@@ -63,6 +63,72 @@ public class RescueCenterTest {
         assertFalse(secondDroneRegistered, "Can't add a drone with same ID");
     }
 
+    @Test
+    void shouldNotAssignMissionWithAnInexistentOperator() {
+        // Preparar
+        Drone drone = new Drone("D3", "E26", 15);
+        center.addDrone(drone);
+
+        // Actuar y Assert
+        assertThrows(IllegalArgumentException.class, () -> center.assignMission("1005", "D3", "Zona norte", 10));
+    }
+
+    @Test
+    void shouldNotAssignMissionWithAnOperatorWithActiveMission() {
+        // Preparar
+        RescueOperator operator = new RescueOperator("OP1", "Ana");
+        center.addOperator(operator);
+
+        Drone drone_1 = new Drone("D4", "E26", 15);
+        center.addDrone(drone_1);
+
+        Drone drone_2 = new Drone("D5", "E26", 15);
+        center.addDrone(drone_2);
+
+        center.assignMission("OP1", "D4", "Zona norte", 15);
+
+        // Actuar y Assert
+        assertThrows(IllegalStateException.class, () -> center.assignMission("OP1", "D5", "Zona sur", 15));
+
+
+    }
+
+
+    @Test
+    void shouldCompleteActiveMission() {
+        // Arrange
+        RescueCenter center = new RescueCenter();
+        center.addOperator(new RescueOperator("OP2", "Luis"));
+        Drone drone = new Drone("D5", "Falcon", 20);
+        center.addDrone(drone);
+        Mission mission = center.assignMission("OP2", "D5", "Zona Este", 10);
+
+        // Act
+        Mission completed = center.completeMission(mission.getId());
+
+        // Assert
+        assertEquals(MissionStatus.COMPLETED, completed.getStatus());
+        assertNotNull(completed.getEndDate());
+        assertTrue(drone.isAvailable());
+    }
+
+
+    @Test
+    void shouldNotCompleteNonExistentMission() {
+        // Arrange
+        RescueCenter center = new RescueCenter();
+
+        // Act + Assert
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> center.completeMission("MISSION NOT FOUND")
+        );
+    }
+
+
+
+
+
     // Casos B
     @Test
     void shouldNotHaveAnInexistentDrone() {
