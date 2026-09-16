@@ -23,6 +23,7 @@ public class RescueCenterTest {
         Drone drone = new Drone("D1", "Falcon", 50);
         // Actuar
         boolean registered = center.addDrone(drone);
+        assertTrue(registered);
     }
 
     @Test
@@ -34,7 +35,6 @@ public class RescueCenterTest {
         boolean droneRegistered = center.addDrone(drone);
 
         // Assert
-        assertTrue(registered);
         assertFalse(droneRegistered, "Can't add a drone with an empty id");
     }
 
