@@ -7,9 +7,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import edu.eci.dosw.tdd.skyrescue.operator.RescueOperator;
+
+import edu.eci.dosw.tdd.skyrescue.mission.Mission;
+import edu.eci.dosw.tdd.skyrescue.mission.MissionStatus;
 
 public class RescueCenterTest {
 
@@ -92,6 +97,25 @@ public class RescueCenterTest {
         assertThrows(IllegalStateException.class, () -> center.assignMission("OP1", "D5", "Zona sur", 15));
 
 
+    }
+
+
+    @Test
+    void shouldCompleteActiveMission() {
+        // Arrange
+        RescueCenter center = new RescueCenter();
+        center.addOperator(new RescueOperator("OP2", "Luis"));
+        Drone drone = new Drone("D5", "Falcon", 20);
+        center.addDrone(drone);
+        Mission mission = center.assignMission("OP2", "D5", "Zona Este", 10);
+
+        // Act
+        Mission completed = center.completeMission(mission.getId());
+
+        // Assert
+        assertEquals(MissionStatus.COMPLETED, completed.getStatus());
+        assertNotNull(completed.getEndDate());
+        assertTrue(drone.isAvailable());
     }
 
 
