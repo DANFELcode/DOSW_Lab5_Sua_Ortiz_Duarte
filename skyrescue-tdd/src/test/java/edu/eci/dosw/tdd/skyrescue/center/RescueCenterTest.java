@@ -177,6 +177,26 @@ public class RescueCenterTest {
 
     @Test
     void shouldNotModifyAnotherActiveMission() {
+        // Preparar
+        RescueOperator firstOperator = new RescueOperator("R53", "Segundo");
+        RescueOperator secondOperator = new RescueOperator("R54", "Allison");
 
+        Drone firstDrone = new Drone("D53", "DJI Mini", 8);
+        Drone secondDrone = new Drone ("D54", "E88", 10);
+
+        center.addOperator(firstOperator);
+        center.addOperator(secondOperator);
+        center.addDrone(firstDrone);
+        center.addDrone(secondDrone);
+
+        Mission firstMission = center.assignMission("R53", "D53", "Usaquen", 8);
+        Mission secondMission = center.assignMission("R54", "D54", "Suba", 10);
+
+        // Actuar
+        center.completeMission(firstMission.getId());
+
+        // Assert
+        assertEquals(MissionStatus.ACTIVE, secondMission.getStatus(), "The second mission status should be ACTIVE");
+        assertFalse(secondDrone.isAvailable(), "The second mission drone must be inactive");
     }
 }
