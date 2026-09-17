@@ -61,6 +61,18 @@ public class RescueCenterTest {
         assertFalse(secondDroneRegistered, "Can't add a drone with same ID");
     }
 
+    @Test
+    void shouldNotRegisterADroneWithABlankId() {
+        // Arrange
+        Drone drone = new Drone("   ", "Matrice 30", 12);
+
+        // Act
+        boolean registered = center.addDrone(drone);
+
+        // Assert
+        assertFalse(registered, "Can't add a drone with a blank id");
+    }
+
     // Section B
     @Test
     void shouldNotHaveAnInexistentDrone() {
