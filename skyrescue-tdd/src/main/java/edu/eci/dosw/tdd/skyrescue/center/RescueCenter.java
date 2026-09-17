@@ -153,9 +153,9 @@ public class RescueCenter {
                 throw new IllegalArgumentException("Mission not found: " + missionId);
             }
 
-            //if (mission.getStatus() == MissionStatus.COMPLETED) {
-                //throw new IllegalStateException("Mission already completed");
-            //}
+            if (mission.getStatus() == MissionStatus.COMPLETED) {
+                throw new IllegalStateException("Mission already completed");
+            }
 
             mission.setStatus(MissionStatus.COMPLETED);
             mission.setEndDate(LocalDateTime.now());
