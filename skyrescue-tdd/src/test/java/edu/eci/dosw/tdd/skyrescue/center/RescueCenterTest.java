@@ -126,6 +126,23 @@ public class RescueCenterTest {
 
     }
 
+    @Test
+    void shouldAssignMissionWhenOperatorAndDroneAreValid() {
+        // Preparar
+        RescueOperator operator = new RescueOperator("R10", "Camila");
+        Drone drone = new Drone("D10", "Falcon", 50);
+        center.addOperator(operator);
+        center.addDrone(drone);
+
+        // Actuar
+        Mission mission = center.assignMission("R10", "D10", "Usaquen", 30);
+
+        // Assert
+        assertNotNull(mission);
+        assertEquals(MissionStatus.ACTIVE, mission.getStatus());
+        assertFalse(drone.isAvailable());
+    }
+
     // Casos C
     @Test
     void shouldCompleteActiveMission() {
