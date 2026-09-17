@@ -129,7 +129,7 @@ public class RescueCenterTest {
     // Casos C
     @Test
     void shouldCompleteActiveMission() {
-        // Arrange
+        // Preparar
         RescueCenter center = new RescueCenter();
         center.addOperator(new RescueOperator("OP2", "Luis"));
         Drone drone = new Drone("D5", "Falcon", 20);
@@ -145,16 +145,38 @@ public class RescueCenterTest {
         assertTrue(drone.isAvailable());
     }
 
-
     @Test
     void shouldNotCompleteNonExistentMission() {
-        // Arrange
+        // Preparar
         RescueCenter center = new RescueCenter();
 
-        // Act + Assert
+        // Actuar y Assert
         assertThrows(
                 IllegalArgumentException.class,
                 () -> center.completeMission("MISSION NOT FOUND")
         );
+    }
+
+    @Test
+    void shouldNotCloseTheSameMissionTwoTimes() {
+        // Preparar
+        RescueOperator operator = new RescueOperator("R52", "Laura");
+        Drone drone = new Drone("D52", "Falcon", 20);
+        center.addOperator(operator);
+        center.addDrone(drone);
+        Mission mission = center.assignMission("R52", "D52", "Boyaca", 20);
+
+        // Actuar
+        center.completeMission(mission.getId());
+
+        // Assert
+        assertThrows(IllegalStateException.class, () -> {
+            center.completeMission(mission.getId());
+        }, "Should throw an state exception if the completed mission is tried to be closed");
+    }
+
+    @Test
+    void shouldNotModifyAnotherActiveMission() {
+
     }
 }
