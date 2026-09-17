@@ -19,19 +19,17 @@ public class RescueCenterTest {
         center = new RescueCenter();
     }
 
-    // Casos A
+    // Section A
     @Test
     void shouldRegisterDroneWhenDataIsValid() {
-        // Preparar
+        // Arrange
         Drone drone = new Drone("D1", "Falcon", 50);
-        // Actuar
         boolean registered = center.addDrone(drone);
         assertTrue(registered);
     }
 
     @Test
     void shouldNotRegisterNullDrone () {
-        // Actuar
         boolean registered = center.addDrone(null);
         // Assert
         assertFalse(registered);
@@ -39,10 +37,10 @@ public class RescueCenterTest {
 
     @Test
     void shouldNotRegisterADroneWithAnEmptyId () {
-        // Preparar
+        // Arrange
         Drone drone = new Drone("", "DJI Mini", 8);
 
-        // Actuar
+        // Act
         boolean droneRegistered = center.addDrone(drone);
 
         // Assert
@@ -51,11 +49,11 @@ public class RescueCenterTest {
 
     @Test
     void shouldNotRegisterTwoDronesWithSameId() {
-        // Preparar
+        // Arrange
         Drone firstDrone = new Drone("D2", "E88", 10);
         Drone secondDrone = new Drone("D2", "DJI Neo 2", 7);
 
-        // Actuar
+        // Act
         center.addDrone(firstDrone);
         boolean secondDroneRegistered = center.addDrone(secondDrone);
 
@@ -63,15 +61,15 @@ public class RescueCenterTest {
         assertFalse(secondDroneRegistered, "Can't add a drone with same ID");
     }
 
-    // Casos B
+    // Section B
     @Test
     void shouldNotHaveAnInexistentDrone() {
-        // Preparar
+        // Arrange
         RescueOperator operator = new RescueOperator("R1", "Daniel");
         center.addOperator(operator);
         String inexistentDroneId = "D4";
 
-        // Actuar y Assert
+        // Act and assert
         assertThrows(IllegalArgumentException.class, () -> {
             center.assignMission("R1", inexistentDroneId, "Panama", 100);
         }, "An Illegal Argument must have been thrown because the drone id doesn't exists");
@@ -79,7 +77,7 @@ public class RescueCenterTest {
 
     @Test
     void shouldNotAssignMissionIfADroneIsOccupied() {
-        // Preparar
+        // Arrange
         RescueOperator firstOperator = new RescueOperator("R2", "Juan");
         RescueOperator secondOperator = new RescueOperator("R3", "David");
         Drone drone = new Drone("D33", "E88", 10);
@@ -90,7 +88,7 @@ public class RescueCenterTest {
 
         center.assignMission("R2", "D33", "Chia", 10);
 
-        // Actuar y Assert
+        // Act and assert
         assertThrows(IllegalStateException.class, () ->{ center.assignMission("R3", "D33",
                 "San Cristobal", 90);
         }, "An Illegal State must be thrown because the drone is assigned to a mission already");
@@ -98,17 +96,17 @@ public class RescueCenterTest {
 
     @Test
     void shouldNotAssignMissionWithAnInexistentOperator() {
-        // Preparar
+        // Arrange
         Drone drone = new Drone("D3", "E26", 15);
         center.addDrone(drone);
 
-        // Actuar y Assert
+        // Act and assert
         assertThrows(IllegalArgumentException.class, () -> center.assignMission("1005", "D3", "Zona norte", 10));
     }
 
     @Test
     void shouldNotAssignMissionWithAnOperatorWithActiveMission() {
-        // Preparar
+        // Arrange
         RescueOperator operator = new RescueOperator("OP1", "Ana");
         center.addOperator(operator);
 
@@ -120,16 +118,45 @@ public class RescueCenterTest {
 
         center.assignMission("OP1", "D4", "Zona norte", 15);
 
-        // Actuar y Assert
+        // Act and assert
         assertThrows(IllegalStateException.class, () -> center.assignMission("OP1", "D5", "Zona sur", 15));
-
-
     }
 
-    // Casos C
+    @Test
+    void shouldAssignMissionWhenOperatorAndDroneAreValid() {
+        // Arrange
+        RescueOperator operator = new RescueOperator("R10", "Camila");
+        Drone drone = new Drone("D10", "Falcon", 50);
+        center.addOperator(operator);
+        center.addDrone(drone);
+
+        // Act
+        Mission mission = center.assignMission("R10", "D10", "Usaquen", 30);
+
+        // Assert
+        assertNotNull(mission);
+        assertEquals(MissionStatus.ACTIVE, mission.getStatus());
+        assertFalse(drone.isAvailable());
+    }
+
+    @Test
+    void shouldNotAssignMissionWhenDistanceExceedsDroneRange() {
+        // Arrange
+        RescueOperator operator = new RescueOperator("R11", "Mateo");
+        Drone drone = new Drone("D11", "E88", 20);
+        center.addOperator(operator);
+        center.addDrone(drone);
+
+        // Act and assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            center.assignMission("R11", "D11", "Suba", 50);
+        }, "An Illegal Argument must have been thrown because the distance exceeds the drone max range");
+    }
+
+    // Section C
     @Test
     void shouldCompleteActiveMission() {
-        // Preparar
+        // Arrange
         center.addOperator(new RescueOperator("OP2", "Luis"));
         Drone drone = new Drone("D5", "Falcon", 20);
         center.addDrone(drone);
@@ -146,7 +173,6 @@ public class RescueCenterTest {
 
     @Test
     void shouldNotCompleteNonExistentMission() {
-        // Actuar y Assert
         assertThrows(
                 IllegalArgumentException.class,
                 () -> center.completeMission("MISSION NOT FOUND")
@@ -155,14 +181,14 @@ public class RescueCenterTest {
 
     @Test
     void shouldNotCloseTheSameMissionTwoTimes() {
-        // Preparar
+        // Arrange
         RescueOperator operator = new RescueOperator("R52", "Laura");
         Drone drone = new Drone("D52", "Falcon", 20);
         center.addOperator(operator);
         center.addDrone(drone);
         Mission mission = center.assignMission("R52", "D52", "Boyaca", 20);
 
-        // Actuar
+        // Act
         center.completeMission(mission.getId());
 
         // Assert
@@ -173,7 +199,7 @@ public class RescueCenterTest {
 
     @Test
     void shouldNotModifyAnotherActiveMission() {
-        // Preparar
+        // Arrange
         RescueOperator firstOperator = new RescueOperator("R53", "Segundo");
         RescueOperator secondOperator = new RescueOperator("R54", "Allison");
 
@@ -188,7 +214,7 @@ public class RescueCenterTest {
         Mission firstMission = center.assignMission("R53", "D53", "Usaquen", 8);
         Mission secondMission = center.assignMission("R54", "D54", "Suba", 10);
 
-        // Actuar
+        // Act
         center.completeMission(firstMission.getId());
 
         // Assert

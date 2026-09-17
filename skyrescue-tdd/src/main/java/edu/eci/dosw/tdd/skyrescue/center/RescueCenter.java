@@ -95,6 +95,10 @@ public class RescueCenter {
                 throw new IllegalStateException("This drone is not available yet");
             }
 
+            if (distanceKm > drone.getMaxRangeKm()) {
+                throw new IllegalArgumentException("Distance exceeds drone max range");
+            }
+
             RescueOperator operator = findOperatorById(operatorId);
             if (operator == null) {
                 throw new IllegalArgumentException("Operator not found: " + operatorId);
