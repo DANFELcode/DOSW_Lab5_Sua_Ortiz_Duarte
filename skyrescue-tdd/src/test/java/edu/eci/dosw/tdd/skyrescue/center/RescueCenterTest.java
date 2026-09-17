@@ -192,6 +192,18 @@ public class RescueCenterTest {
     }
 
     @Test
+    void shouldRejectBlankMissionIdWithAValidationMessage() {
+        // Act
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> center.completeMission("   ")
+        );
+
+        // Assert
+        assertEquals("Mission id must not be null or blank", exception.getMessage());
+    }
+
+    @Test
     void shouldNotCloseTheSameMissionTwoTimes() {
         // Arrange
         RescueOperator operator = new RescueOperator("R52", "Laura");
