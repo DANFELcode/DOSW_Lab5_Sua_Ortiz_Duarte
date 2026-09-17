@@ -152,6 +152,10 @@ public class RescueCenter {
          * @return completed mission.
          */
         public Mission completeMission(String missionId) {
+            if (!isValidId(missionId)) {
+                throw new IllegalArgumentException("Mission id must not be null or blank");
+            }
+
             Mission mission = findMissionById(missionId);
             if (mission == null) {
                 throw new IllegalArgumentException("Mission not found: " + missionId);
