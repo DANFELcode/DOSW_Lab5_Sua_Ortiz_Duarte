@@ -130,7 +130,6 @@ public class RescueCenterTest {
     @Test
     void shouldCompleteActiveMission() {
         // Preparar
-        RescueCenter center = new RescueCenter();
         center.addOperator(new RescueOperator("OP2", "Luis"));
         Drone drone = new Drone("D5", "Falcon", 20);
         center.addDrone(drone);
@@ -147,9 +146,6 @@ public class RescueCenterTest {
 
     @Test
     void shouldNotCompleteNonExistentMission() {
-        // Preparar
-        RescueCenter center = new RescueCenter();
-
         // Actuar y Assert
         assertThrows(
                 IllegalArgumentException.class,
