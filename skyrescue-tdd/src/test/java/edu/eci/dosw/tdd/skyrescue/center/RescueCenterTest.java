@@ -1,20 +1,14 @@
 package edu.eci.dosw.tdd.skyrescue.center;
 
 import edu.eci.dosw.tdd.skyrescue.drone.Drone;
+import edu.eci.dosw.tdd.skyrescue.mission.Mission;
 
-import edu.eci.dosw.tdd.skyrescue.center.RescueCenter;
+import edu.eci.dosw.tdd.skyrescue.mission.MissionStatus;
+import edu.eci.dosw.tdd.skyrescue.operator.RescueOperator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import edu.eci.dosw.tdd.skyrescue.operator.RescueOperator;
-
-import edu.eci.dosw.tdd.skyrescue.mission.Mission;
-import edu.eci.dosw.tdd.skyrescue.mission.MissionStatus;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RescueCenterTest {
 
@@ -69,6 +63,39 @@ public class RescueCenterTest {
         assertFalse(secondDroneRegistered, "Can't add a drone with same ID");
     }
 
+    // Casos B
+    @Test
+    void shouldNotHaveAnInexistentDrone() {
+        // Preparar
+        RescueOperator operator = new RescueOperator("R1", "Daniel");
+        center.addOperator(operator);
+        String inexistentDroneId = "D4";
+
+        // Actuar y Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            center.assignMission("R1", inexistentDroneId, "Panama", 100);
+        }, "An Illegal Argument must have been thrown because the drone id doesn't exists");
+    }
+
+    @Test
+    void shouldNotAssignMissionIfADroneIsOccupied() {
+        // Preparar
+        RescueOperator firstOperator = new RescueOperator("R2", "Juan");
+        RescueOperator secondOperator = new RescueOperator("R3", "David");
+        Drone drone = new Drone("D33", "E88", 10);
+
+        center.addOperator(firstOperator);
+        center.addOperator(secondOperator);
+        center.addDrone(drone);
+
+        center.assignMission("R2", "D33", "Chia", 10);
+
+        // Actuar y Assert
+        assertThrows(IllegalStateException.class, () ->{ center.assignMission("R3", "D33",
+                "San Cristobal", 90);
+        }, "An Illegal State must be thrown because the drone is assigned to a mission already");
+    }
+
     @Test
     void shouldNotAssignMissionWithAnInexistentOperator() {
         // Preparar
@@ -99,7 +126,7 @@ public class RescueCenterTest {
 
     }
 
-
+    // Casos C
     @Test
     void shouldCompleteActiveMission() {
         // Arrange
@@ -130,8 +157,4 @@ public class RescueCenterTest {
                 () -> center.completeMission("MISSION NOT FOUND")
         );
     }
-
-
-
-
 }

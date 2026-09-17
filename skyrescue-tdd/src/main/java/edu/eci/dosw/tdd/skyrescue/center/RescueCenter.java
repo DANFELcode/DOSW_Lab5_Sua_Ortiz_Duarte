@@ -1,4 +1,4 @@
-    package edu.eci.dosw.tdd.skyrescue.center;
+package edu.eci.dosw.tdd.skyrescue.center;
 
     import edu.eci.dosw.tdd.skyrescue.drone.Drone;
     import edu.eci.dosw.tdd.skyrescue.mission.Mission;
@@ -7,54 +7,54 @@
     import java.time.LocalDateTime;
     import java.util.UUID;
 
-    import java.util.ArrayList;
-    import java.util.HashMap;
-    import java.util.List;
-    import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Coordinates drones, operators and emergency missions.
+ */
+public class RescueCenter {
+
+    private final List<RescueOperator> operators;
+    private final Map<String, Drone> drones;
+    private final List<Mission> missions;
+
+    public RescueCenter() {
+        this.operators = new ArrayList<>();
+        this.drones = new HashMap<>();
+        this.missions = new ArrayList<>();
+    }
 
     /**
-     * Coordinates drones, operators and emergency missions.
+     * Registers a drone in the rescue center.
+     *
+     * Rules:
+     * - The drone cannot be null.
+     * - The drone id cannot be null or blank.
+     * - Two drones cannot have the same id.
+     * - A valid drone is stored as available.
+     *
+     * @param drone drone to register.
+     * @return true if it was registered; false otherwise.
      */
-    public class RescueCenter {
-
-        private final List<RescueOperator> operators;
-        private final Map<String, Drone> drones;
-        private final List<Mission> missions;
-
-        public RescueCenter() {
-            this.operators = new ArrayList<>();
-            this.drones = new HashMap<>();
-            this.missions = new ArrayList<>();
+    public boolean addDrone(Drone drone) {
+        if (drone == null) {
+            return false;
         }
 
-        /**
-         * Registers a drone in the rescue center.
-         *
-         * Rules:
-         * - The drone cannot be null.
-         * - The drone id cannot be null or blank.
-         * - Two drones cannot have the same id.
-         * - A valid drone is stored as available.
-         *
-         * @param drone drone to register.
-         * @return true if it was registered; false otherwise.
-         */
-        public boolean addDrone(Drone drone) {
-            if (drone == null) {
-                return false;
-            }
-
-            if (drone.getId() == null || drone.getId().isEmpty()) {
-                return false;
-            }
-
-            if(drones.containsKey(drone.getId())) {
-                return false;
-            }
-
-            drones.put(drone.getId(), drone);
-            return true;
+        if (drone.getId() == null || drone.getId().isEmpty()) {
+            return false;
         }
+
+        if(drones.containsKey(drone.getId())) {
+            return false;
+        }
+
+        drones.put(drone.getId(), drone);
+        return true;
+    }
 
         /**
          * Assigns an emergency mission to an operator and an available drone.
@@ -85,6 +85,16 @@
                 String droneId,
                 String location,
                 int distanceKm) {
+            Drone drone = drones.get(droneId);
+
+            if(drone == null) {
+                throw new IllegalArgumentException("This drone doesn't exists");
+            }
+
+            if(!drone.isAvailable()) {
+                throw new IllegalStateException("This drone is not available yet");
+            }
+
             RescueOperator operator = findOperatorById(operatorId);
             if (operator == null) {
                 throw new IllegalArgumentException("Operator not found: " + operatorId);
@@ -92,7 +102,7 @@
             if (hasActiveMission(operatorId)) {
                 throw new IllegalStateException("Operator already has an active mission: " + operatorId);
             }
-            Drone drone = drones.get(droneId);
+
             Mission mission = new Mission(
                     UUID.randomUUID().toString(),
                     location,
@@ -155,7 +165,7 @@
                     .orElse(null);
         }
 
-        public boolean addOperator(RescueOperator operator) {
-            return operators.add(operator);
-        }
+    public boolean addOperator(RescueOperator operator) {
+        return operators.add(operator);
     }
+}
