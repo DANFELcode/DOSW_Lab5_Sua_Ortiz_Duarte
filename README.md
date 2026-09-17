@@ -12,7 +12,7 @@ Juan Pablo Duarte
 **RED:** 
 ![RED](skyrescue-tdd/docs/evidence/adddrone-valid-red.png)
 **GREEN:** 
-![GREEN](docs/evidence/adddrone-valid-green.png)
+![GREEN](skyrescue-tdd/docs/evidence/adddrone-valid-green.png)
 
 
 ### B. Asignación de misiones (assignMission)
