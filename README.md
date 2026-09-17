@@ -65,7 +65,19 @@
 
 ![GREEN](skyrescue-tdd/docs/evidence/complete-notfound-green.png)
 
-## Cobertura
+## Cobertura 
 
 ![GREEN](skyrescue-tdd/docs/evidence/coverage-final.png)
+
+
+## Análisis SonarQube
+
+### Analisis inicial SonarQube
+**Quality Gate:**  Passed
+**Coverage Jacoco:** 85.58% (89/104 líneas)
+**Coverage sonar:** 84.3%
+**Duplicación:** 0.0%
+**Issues:** 0 Security, 2 Reliability, 13 Maintainability
+
+![Dashboard SonarQube](skyrescue-tdd/docs/evidence/sonar-dashboard.png)
 
