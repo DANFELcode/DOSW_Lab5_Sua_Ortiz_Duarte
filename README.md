@@ -10,7 +10,7 @@ Juan Pablo Duarte
 
 #### Ciclo TDD - registrar un dron válido
 **RED:** 
-![RED](docs/evidence/adddrone-valid-red.png)
+![RED](skyrescue-tdd/docs/evidence/adddrone-valid-red.png)
 **GREEN:** 
 ![GREEN](docs/evidence/adddrone-valid-green.png)
 
