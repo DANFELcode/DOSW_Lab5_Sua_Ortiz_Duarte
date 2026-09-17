@@ -129,8 +129,7 @@ public class RescueCenterTest {
     // Casos C
     @Test
     void shouldCompleteActiveMission() {
-        // Arrange
-        RescueCenter center = new RescueCenter();
+        // Preparar
         center.addOperator(new RescueOperator("OP2", "Luis"));
         Drone drone = new Drone("D5", "Falcon", 20);
         center.addDrone(drone);
@@ -145,16 +144,55 @@ public class RescueCenterTest {
         assertTrue(drone.isAvailable());
     }
 
-
     @Test
     void shouldNotCompleteNonExistentMission() {
-        // Arrange
-        RescueCenter center = new RescueCenter();
-
-        // Act + Assert
+        // Actuar y Assert
         assertThrows(
                 IllegalArgumentException.class,
                 () -> center.completeMission("MISSION NOT FOUND")
         );
+    }
+
+    @Test
+    void shouldNotCloseTheSameMissionTwoTimes() {
+        // Preparar
+        RescueOperator operator = new RescueOperator("R52", "Laura");
+        Drone drone = new Drone("D52", "Falcon", 20);
+        center.addOperator(operator);
+        center.addDrone(drone);
+        Mission mission = center.assignMission("R52", "D52", "Boyaca", 20);
+
+        // Actuar
+        center.completeMission(mission.getId());
+
+        // Assert
+        assertThrows(IllegalStateException.class, () -> {
+            center.completeMission(mission.getId());
+        }, "Should throw an state exception if the completed mission is tried to be closed");
+    }
+
+    @Test
+    void shouldNotModifyAnotherActiveMission() {
+        // Preparar
+        RescueOperator firstOperator = new RescueOperator("R53", "Segundo");
+        RescueOperator secondOperator = new RescueOperator("R54", "Allison");
+
+        Drone firstDrone = new Drone("D53", "DJI Mini", 8);
+        Drone secondDrone = new Drone ("D54", "E88", 10);
+
+        center.addOperator(firstOperator);
+        center.addOperator(secondOperator);
+        center.addDrone(firstDrone);
+        center.addDrone(secondDrone);
+
+        Mission firstMission = center.assignMission("R53", "D53", "Usaquen", 8);
+        Mission secondMission = center.assignMission("R54", "D54", "Suba", 10);
+
+        // Actuar
+        center.completeMission(firstMission.getId());
+
+        // Assert
+        assertEquals(MissionStatus.ACTIVE, secondMission.getStatus(), "The second mission status should be ACTIVE");
+        assertFalse(secondDrone.isAvailable(), "The second mission drone must be inactive");
     }
 }

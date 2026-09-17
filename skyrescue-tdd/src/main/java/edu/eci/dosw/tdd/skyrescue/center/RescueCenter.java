@@ -152,9 +152,18 @@ public class RescueCenter {
             if (mission == null) {
                 throw new IllegalArgumentException("Mission not found: " + missionId);
             }
+
+            if (mission.getStatus() == MissionStatus.COMPLETED) {
+                throw new IllegalStateException("Mission already completed");
+            }
+
             mission.setStatus(MissionStatus.COMPLETED);
             mission.setEndDate(LocalDateTime.now());
-            mission.getDrone().setAvailable(true);
+
+            if (mission.getDrone() != null) {
+                mission.getDrone().setAvailable(true);
+            }
+
             return mission;
         }
 
