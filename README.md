@@ -129,13 +129,13 @@ Tras completar las pruebas faltantes de `Drone` (equals, hashCode y getModel), l
 
 ## Pull Requests
 
-- PR JUnit: #1
-- PR clases base: #2
-- PR TDD addDrone: #3, #6, #7, #12
-- PR TDD assignMission: #8, #9, #11, #16
-- PR TDD completeMission: #10, #13
-- PR JaCoCo: #14, #19
-- PR SonarQube: #17, #18
+- PR JUnit: [#1](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/1)
+- PR clases base: [#2](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/2)
+- PR TDD addDrone: [#3](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/3), [#6](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/6), [#7](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/7), [#12](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/12)
+- PR TDD assignMission: [#8](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/8), [#9](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/9), [#11](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/11), [#16](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/16)
+- PR TDD completeMission: [#10](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/10), [#13](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/13)
+- PR JaCoCo: [#14](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/14), [#19](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/19)
+- PR SonarQube: [#17](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/17), [#18](https://github.com/DANFELcode/DOSW_Lab5_Sua_Ortiz_Duarte/pull/17)
 
 ## Reflexión técnica
 
